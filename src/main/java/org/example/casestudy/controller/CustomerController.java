@@ -11,7 +11,6 @@ import org.example.casestudy.service.CustomerService;
 
 @RestController
 @RequestMapping("/api/customers")
-@PreAuthorize("hasRole('ADMIN')")
 public class CustomerController {
 
     private CustomerService customerService;
@@ -23,12 +22,8 @@ public class CustomerController {
 
     @PostMapping
     public ResponseEntity<Customer> createCustomer(
-            @RequestParam String username,
-            @RequestParam String password,
-            @RequestParam String role,
-            @RequestParam boolean enabled) {
-        Customer customer = customerService.createCustomer(username, password, role, enabled);
-        return new ResponseEntity<>(customer, HttpStatus.CREATED);
+            @RequestBody Customer customer) {
+        return new ResponseEntity<>(customerService.createCustomer(customer), HttpStatus.CREATED);
     }
 
     @GetMapping("/{username}")

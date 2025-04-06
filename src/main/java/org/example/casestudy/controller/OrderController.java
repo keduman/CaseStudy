@@ -32,7 +32,6 @@ public class OrderController {
                                  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime end) {
         return orderService.listOrders(customerId, start, end);
     }
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/match/{id}")
     public void matchOrder(@PathVariable UUID id) {
         orderService.matchOrder(id);
