@@ -45,7 +45,12 @@ public class BasicAuthFilter extends OncePerRequestFilter {
             Customer customer = checkUser(username);
             if (username.equals(customer.getUsername()) && password.equals(customer.getPassword())) {
                 SecurityContextHolder.getContext().setAuthentication(
-                        new PreAuthenticatedAuthenticationToken(username, null, List.of(new SimpleGrantedAuthority(customer.getRole()))));
+                        new PreAuthenticatedAuthenticationToken(
+                                customer.getUsername(),
+                                null,
+                                List.of(new SimpleGrantedAuthority(customer.getRole()))
+                        )
+                );
             } else {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid credentials");
                 return;

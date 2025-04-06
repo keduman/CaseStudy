@@ -33,7 +33,7 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/auth").permitAll()
                                 .requestMatchers("/h2-console/**").permitAll()
-                                .requestMatchers("/api/customers").hasRole("ADMIN")
+                                .requestMatchers("/api/customers").hasAuthority("ROLE_ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(basicAuthFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)
