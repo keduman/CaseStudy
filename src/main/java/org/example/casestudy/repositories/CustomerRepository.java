@@ -1,6 +1,6 @@
-package repositories;
+package org.example.casestudy.repositories;
 
-import entities.Customer;
+import org.example.casestudy.entities.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

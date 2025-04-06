@@ -1,18 +1,18 @@
-package entities;
+package org.example.casestudy.entities;
 
-import enums.OrderStatus;
-import enums.OrderType;
+import org.example.casestudy.enums.OrderStatus;
+import org.example.casestudy.enums.OrderType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
+@Table(name = "`order`")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,26 +20,26 @@ import java.util.UUID;
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private UUID id;
 
-    private String customerId;
-
+    private UUID customerId;
     private String assetName;
 
     @Enumerated(EnumType.STRING)
     private OrderType orderType;
-
-    private Double size;
-
+    private Long size;
     private Double price;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
+    private OrderStatus status;
 
-    private Date createdDate;
+    private LocalDateTime createDate;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Asset> assets;
+    @PrePersist
+    public void prePersist() {
+        createDate = LocalDateTime.now();
+    }
+
 
 }
