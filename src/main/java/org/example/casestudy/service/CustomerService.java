@@ -1,5 +1,6 @@
 package org.example.casestudy.service;
 
+import jakarta.transaction.Transactional;
 import org.example.casestudy.entities.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -9,6 +10,7 @@ import org.example.casestudy.repositories.CustomerRepository;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class CustomerService {
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
@@ -20,7 +22,6 @@ public class CustomerService {
     }
 
     public Customer createCustomer(Customer customer) {
-
         return customerRepository.save(customer);
     }
 

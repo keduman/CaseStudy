@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service
+@Transactional
 public class AuthService {
     private final CustomerRepository customerRepository;
     private final JwtUtils jwtUtils;
@@ -19,7 +20,6 @@ public class AuthService {
         this.jwtUtils = jwtUtils;
     }
 
-    @Transactional
     public String findCustomerByUsername(String username, String password) {
         var customer = customerRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("Customer not found"));

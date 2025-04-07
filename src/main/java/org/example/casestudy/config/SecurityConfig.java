@@ -45,8 +45,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/auth", "/h2-console/**").permitAll()
-                                .requestMatchers("/api/customers/**").hasRole("ADMIN") // Improved customer matching
-                                .requestMatchers("/api/orders/**").hasRole("ADMIN") // Improved order matching
+                                .requestMatchers("/api/**").hasAuthority("ROLE_ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)
