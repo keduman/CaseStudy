@@ -31,10 +31,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/auth").permitAll()
-                                .requestMatchers("/h2-console/**").permitAll()
-                                .requestMatchers("/api/customers").hasAuthority("ROLE_ADMIN")
-                                .requestMatchers("/orders**").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers("/auth", "/h2-console/**").permitAll()
+                                .requestMatchers("/api/customers/**").hasRole("ADMIN") // Improved customer matching
+                                .requestMatchers("/api/orders/**").hasRole("ADMIN") // Improved order matching
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)
