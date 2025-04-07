@@ -34,6 +34,7 @@ public class OrderController {
     }
 
     @PostMapping("/match/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void matchOrder(@PathVariable UUID id) {
         orderService.matchOrder(id);
     }

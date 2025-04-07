@@ -1,0 +1,94 @@
+### Step 1: Authenticate and get the token
+POST http://localhost:8085/auth
+Content-Type: application/json
+Cookie: JSESSIONID=62A28A25B5832405D744D94E8A442AE6
+
+{
+  "username": "admin",
+  "password": "password"
+}
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.global.set("token", response.body);
+    });
+%}
+
+
+### Step 2: Create customer
+POST http://localhost:8085/api/customers
+Content-Type: application/json
+Authorization: Bearer {{token}}
+Accept: application/json
+Cookie: JSESSIONID=62A28A25B5832405D744D94E8A442AE6
+
+{
+  "username": "newuser3",
+  "password": "passwordabc",
+  "role": "ROLE_USER",
+  "enabled": true
+}
+
+### Step 3: Get customer by username
+GET http://localhost:8085/api/customers/admin
+Content-Type: application/json
+Authorization: Bearer {{token}}
+Cookie: JSESSIONID=62A28A25B5832405D744D94E8A442AE6
+
+### Step 4: Create order
+POST http://localhost:8085/api/orders
+Content-Type: application/json
+Authorization: Bearer {{token}}
+Accept: application/json
+Cookie: JSESSIONID=B2A7749432CB987AEBE199CA1E42A7CC
+
+{
+  "customerId": "3fe477ff-fec8-4be4-81ff-a9d925f82a52",
+  "assetName": "STOCK_B",
+  "orderType": "BUY",
+  "size": 20,
+  "price": 10.0
+}
+
+### Step 5: Match order
+POST http://localhost:8085/api/orders/match/0b78846a-00dd-434d-a375-13076ed3826f
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Cookie: JSESSIONID=B2A7749432CB987AEBE199CA1E42A7CC
+
+### Step 6: Delete order
+POST http://localhost:8085/api/orders/delete/43bd6f16-9067-4e85-965c-24b8fc311fb0/3fe477ff-fec8-4be4-81ff-a9d925f82a52
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Cookie: JSESSIONID=B2A7749432CB987AEBE199CA1E42A7CC
+
+### Step 7: Get asset by ID
+GET http://localhost:8085/api/assets/3fe477ff-fec8-4be4-81ff-a9d925f82a52
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc0NDA1NTY1OSwiZXhwIjoxNzQ0MDkxNjU5fQ.QtX3pzMxlMcVER4icLUC3es2_zBYb0Vt8u38q6PdysE
+Cookie: JSESSIONID=B2A7749432CB987AEBE199CA1E42A7CC
+
+
+### Step 8: Authenticate and get USER_TOKEN
+
+POST http://localhost:8085/auth
+Content-Type: application/json
+Cookie: JSESSIONID=62A28A25B5832405D744D94E8A442AE6
+
+{
+  "username": "user1",
+  "password": "user1"
+}
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.global.set("user_token", response.body);
+    });
+%}
+
+### Step 9: Get assets by customer using USER_TOKEN
+GET http://localhost:8085/api/assets
+Authorization: Bearer {{user_token}}
+Content-Type: application/json
+Cookie: JSESSIONID=B2A7749432CB987AEBE199CA1E42A7CC
+

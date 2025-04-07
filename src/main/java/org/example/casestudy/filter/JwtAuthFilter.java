@@ -46,7 +46,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 if (jwtUtils.validateToken(token, customer.getUsername())) {
                     SecurityContextHolder.getContext().setAuthentication(
                             new PreAuthenticatedAuthenticationToken(
-                                    customer.getUsername(),
+                                    customer,
                                     null,
                                     List.of(new SimpleGrantedAuthority(customer.getRole()))
                             )
