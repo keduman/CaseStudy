@@ -41,7 +41,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 Customer customer = customerService.findByUsername(username)
-                        .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
+                        .orElseThrow(() -> new ServletException("Customer not found"));
 
                 if (jwtUtils.validateToken(token, customer.getUsername())) {
                     SecurityContextHolder.getContext().setAuthentication(

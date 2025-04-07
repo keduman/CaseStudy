@@ -1,7 +1,6 @@
 package org.example.casestudy.service;
 
 import jakarta.transaction.Transactional;
-import org.example.casestudy.entities.Customer;
 import org.example.casestudy.repositories.CustomerRepository;
 import org.example.casestudy.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;

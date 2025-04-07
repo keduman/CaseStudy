@@ -79,12 +79,12 @@ public class OrderService {
     }
 
 
-    private Asset findOrCreateAsset(UUID customerId, String assetName) {
+    public Asset findOrCreateAsset(UUID customerId, String assetName) {
         return assetRepository.findByCustomerIdAndAssetName(customerId, assetName)
                 .orElseGet(() -> createNewAsset(customerId, assetName));
     }
 
-    private Asset createNewAsset(UUID customerId, String assetName) {
+    public Asset createNewAsset(UUID customerId, String assetName) {
         Asset newAsset = new Asset();
         newAsset.setCustomerId(customerId);
         newAsset.setAssetName(assetName);
@@ -93,7 +93,7 @@ public class OrderService {
         return assetRepository.save(newAsset);
     }
 
-    private Order findOrderByIdAndCustomerId(UUID orderId, UUID customerId) {
+    public Order findOrderByIdAndCustomerId(UUID orderId, UUID customerId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
         if (!order.getCustomerId().equals(customerId)) {
@@ -102,7 +102,7 @@ public class OrderService {
         return order;
     }
 
-    private Order findPendingOrderById(UUID orderId) {
+    public Order findPendingOrderById(UUID orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
         if (order.getStatus() != OrderStatus.PENDING) {
@@ -111,7 +111,7 @@ public class OrderService {
         return order;
     }
 
-    private void updateTRYBalanceForBuy(UUID customerId, long size, double price) {
+    public void updateTRYBalanceForBuy(UUID customerId, long size, double price) {
         Asset tryAsset = findOrCreateAsset(customerId, "TRY");
         long cost = (long) (size * price);
         if (tryAsset.getUsableSize() < cost) {
@@ -121,7 +121,7 @@ public class OrderService {
         assetRepository.save(tryAsset);
     }
 
-    private void updateAssetBalanceForSell(Asset asset, long size) {
+    public void updateAssetBalanceForSell(Asset asset, long size) {
         if (asset.getUsableSize() < size) {
             throw new IllegalArgumentException("Insufficient asset balance");
         }
@@ -129,7 +129,7 @@ public class OrderService {
         assetRepository.save(asset);
     }
 
-    private void updateBalancesOnOrderCancellation(Order order) {
+    public void updateBalancesOnOrderCancellation(Order order) {
         UUID customerId = order.getCustomerId();
         String assetName = order.getAssetName();
         OrderType orderType = order.getOrderType();
@@ -151,7 +151,7 @@ public class OrderService {
         }
     }
 
-    private void updateBalancesOnOrderMatch(Order order) {
+    public void updateBalancesOnOrderMatch(Order order) {
         UUID customerId = order.getCustomerId();
         String assetName = order.getAssetName();
         OrderType orderType = order.getOrderType();
