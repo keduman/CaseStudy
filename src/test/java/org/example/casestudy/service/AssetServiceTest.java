@@ -23,6 +23,7 @@ public class AssetServiceTest {
     @InjectMocks
     private AssetService assetService;
 
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);

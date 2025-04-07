@@ -19,9 +19,7 @@ public class AuthController {
     }
 
     @PostMapping
-    public ResponseEntity<String> getBasicAuthToken(
-            @RequestBody Authorization authorization) {
-
+    public ResponseEntity<String> getBasicAuthToken(@RequestBody Authorization authorization) {
         return ResponseEntity.ok(authService.findCustomerByUsername(authorization.getUsername(), authorization.getPassword()));
     }
 }
