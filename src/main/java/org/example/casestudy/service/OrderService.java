@@ -143,17 +143,15 @@ public class OrderService {
             Asset tryAsset = assetRepository.findByCustomerIdAndAssetName(customerId, "TRY")
                     .orElseThrow(() -> new IllegalArgumentException("TRY asset not found"));
             long cost = (long) (size * price);
-            tryAsset.setSize(tryAsset.getSize() + cost);
             tryAsset.setUsableSize(tryAsset.getUsableSize() + cost);
             assetRepository.save(tryAsset);
         } else if (orderType == OrderType.SELL) {
-            asset.setSize(asset.getSize() + size);
             asset.setUsableSize(asset.getUsableSize() + size);
             assetRepository.save(asset);
         }
     }
 
-    private void updateBalancesOnOrderMatch(Order order) {  // Bonus 2
+    private void updateBalancesOnOrderMatch(Order order) {
         UUID customerId = order.getCustomerId();
         String assetName = order.getAssetName();
         OrderType orderType = order.getOrderType();
@@ -161,20 +159,19 @@ public class OrderService {
         double price = order.getPrice();
 
         Asset asset = assetRepository.findByCustomerIdAndAssetName(customerId, assetName)
-                .orElseThrow(() -> new EntityNotFoundException("Asset not found"));  // More specific exception
+                .orElseThrow(() -> new EntityNotFoundException("Asset not found"));
         Asset tryAsset = findOrCreateAsset(customerId, "TRY");
 
-        long cost = (long) (size * price); // Calculate cost once
+        long cost = (long) (size * price);
 
         if (orderType == OrderType.BUY) {
             tryAsset.setSize(tryAsset.getSize() - cost);
             asset.setSize(asset.getSize() + size);
             asset.setUsableSize(asset.getUsableSize() + size);
-
         } else if (orderType == OrderType.SELL) {
             tryAsset.setSize(tryAsset.getSize() + cost);
+            tryAsset.setUsableSize(tryAsset.getUsableSize() + cost);
             asset.setSize(asset.getSize() - size);
-            asset.setUsableSize(asset.getUsableSize() - size);
         }
 
         assetRepository.save(asset);

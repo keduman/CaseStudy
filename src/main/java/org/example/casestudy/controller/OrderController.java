@@ -37,5 +37,10 @@ public class OrderController {
         orderService.matchOrder(id);
     }
 
+    @PostMapping("/delete/{id}/{customerId}")
+    public void deleteOrder(@PathVariable UUID id, @PathVariable UUID customerId) {
+        orderService.deleteOrder(id, customerId);
+    }
+
 
 }
