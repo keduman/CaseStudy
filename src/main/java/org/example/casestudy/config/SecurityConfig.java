@@ -1,6 +1,6 @@
 package org.example.casestudy.config;
 
-import org.example.casestudy.filter.BasicAuthFilter;
+import org.example.casestudy.filter.JwtAuthFilter;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,10 +19,10 @@ import javax.sql.DataSource;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final BasicAuthFilter basicAuthFilter;
+    private final JwtAuthFilter jwtAuthFilter;
 
-    public SecurityConfig( BasicAuthFilter basicAuthFilter) {
-        this.basicAuthFilter = basicAuthFilter;
+    public SecurityConfig(@Lazy JwtAuthFilter jwtAuthFilter) {
+        this.jwtAuthFilter = jwtAuthFilter;
     }
 
     @Bean
@@ -37,14 +37,14 @@ public class SecurityConfig {
                                 .requestMatchers("/orders**").hasAuthority("ROLE_ADMIN")
                                 .anyRequest().authenticated()
                 )
-                .addFilterBefore(basicAuthFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)
-                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin())); // For H2 Console
+                .addFilterBefore(jwtAuthFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)
+                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()));
         return http.build();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); // bcrypt-encoded passwords
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
