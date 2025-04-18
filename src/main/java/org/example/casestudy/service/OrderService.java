@@ -33,7 +33,6 @@ public class OrderService {
     }
 
 
-    @Transactional
     public Order createOrder(Order order) {
         Asset asset = findOrCreateAsset(order.getCustomerId(), order.getAssetName());
 
@@ -51,7 +50,6 @@ public class OrderService {
         return orderRepository.findByCustomerIdAndCreateDateBetween(customerId, startDate, endDate);
     }
 
-    @Transactional
     public void deleteOrder(UUID orderId, UUID customerId) {
         Order order = findOrderByIdAndCustomerId(orderId, customerId);
 
@@ -70,7 +68,6 @@ public class OrderService {
     }
 
 
-    @Transactional
     public void matchOrder(UUID orderId) {
         Order order = findPendingOrderById(orderId);
         updateBalancesOnOrderMatch(order);
